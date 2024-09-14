@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/mode-javascript';
@@ -8,12 +8,6 @@ function ProblemDisplay({ problem }) {
   const [userCode, setUserCode] = React.useState('');
   const [feedback, setFeedback] = React.useState('');
 const [results, setResults] = React.useState([]);
-
-useEffect(() => {
-  // Reset feedback and results when a new problem is generated
-  setFeedback('');
-  setResults([]);
-}, [problem]);
 
   if (!problem) {
     return <div className="mt-8 text-center text-gray-500">No problem generated yet.</div>;
