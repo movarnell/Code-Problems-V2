@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import { Play } from 'lucide-react';
 
@@ -7,12 +7,13 @@ import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/theme-vibrant_ink';
 
 function ProblemDisplay({ problem }) {
-  const [userCode, setUserCode] = React.useState('');
-  const [feedback, setFeedback] = React.useState('');
-  const [results, setResults] = React.useState([]);
+  const [userCode, setUserCode] = useState('');
+  const [feedback, setFeedback] = useState('');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Reset state when a new problem is generated
-  React.useEffect(() => {
+  useEffect(() => {
     setUserCode('');
     setFeedback('');
     setResults([]);
@@ -25,6 +26,7 @@ function ProblemDisplay({ problem }) {
   const { problem_title, difficulty, language, problem_description, requirements, test_cases } = problem;
 
   const handleRunCode = async () => {
+    setLoading(true);
     console.log('Running code:', userCode);
     console.log('Problem:', problem);
 
@@ -50,8 +52,8 @@ function ProblemDisplay({ problem }) {
       console.log('Code execution result:', data);
       setFeedback(data.feedback);
       setResults(data.results);
-      // Display feedback and results
-      //alert(data.feedback); // Show feedback to the user
+      setLoading(false);
+
       data.results.forEach((result) => {
         console.log(`Test Case: ${result.testCase}`);
         console.log(`Expected Output: ${result.expectedOutput}`);
@@ -59,6 +61,7 @@ function ProblemDisplay({ problem }) {
         console.log(`Passed: ${result.passed}`);
       });
     } catch (error) {
+      setLoading(false);
       console.error('Error parsing JSON:', error.message);
       console.error('Response text:', text);
     }
@@ -101,12 +104,13 @@ function ProblemDisplay({ problem }) {
           value={userCode}
           name="code-editor"
           editorProps={{ $blockScrolling: true }}
+          fontSize={"1.15em"}
           setOptions={{
             enableAutocompletion: true,
             enableLiveAutocompletion: true,
             enableSnippets: true,
             showLineNumbers: true,
-            tabSize: 2,
+            tabSize: 4,
           }}
           className="overflow-hidden rounded-md"
           style={{ width: '100%', height: '300px', borderRadius: '0.375rem', border: '1px solid #4b5563' }} // Tailwind Gray-700
@@ -115,7 +119,11 @@ function ProblemDisplay({ problem }) {
           onClick={handleRunCode}
           className="flex items-center justify-center px-4 py-2 mt-4 text-white transition-colors duration-300 rounded bg-primary-light dark:bg-primary-dark hover:bg-primary-dark dark:hover:bg-primary-light"
         >
-          <Play className="w-5 h-5 mr-2" />
+          {loading ? (
+            <div className="mr-2 loader"></div> // Add a loader spinner here
+          ) : (
+            <Play className="w-5 h-5 mr-2" />
+          )}
           Run Code
         </button>
       </div>
@@ -138,15 +146,15 @@ function ProblemDisplay({ problem }) {
               } transition-colors duration-300`}
             >
               <p className="mb-1">
-                <strong className="text-text-light dark:text-text-dark">Test Case:</strong> {result.testCase}
+                <strong className="text-text-light dark:text-white">Test Case:</strong> {result.testCase}
               </p>
               <p className="mb-1">
-                <strong className="text-text-light dark:text-text-dark">Expected Output:</strong> {result.expectedOutput}
+                <strong className="text-text-light dark:text-white">Expected Output:</strong> {result.expectedOutput}
               </p>
               <p className="mb-1">
-                <strong className="text-text-light dark:text-text-dark">Actual Output:</strong> {result.actualOutput}
+                <strong className="text-text-light dark:text-white">Actual Output:</strong> {result.actualOutput}
               </p>
-              <p className={`font-semibold ${result.passed ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+              <p className={`font-semibold ${result.passed ? 'text-green-600 dark:text-green-400 dark:text-white' : 'text-red-600 dark:text-red-400'}`}>
                 {result.passed ? 'Passed' : 'Failed'}
               </p>
             </div>
@@ -161,18 +169,18 @@ function ProblemDisplay({ problem }) {
             <div key={index} className="p-4 mb-4 transition-colors duration-300 rounded-md bg-gray-50 dark:bg-gray-700">
               <p className="mb-1">
                 <strong className="text-text-light dark:text-text-dark">Input:</strong>{' '}
-                <code className="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded">
+                <code className="bg-gray-200 dark:bg-gray-600 dark:text-white px-1 py-0.5 rounded">
                   {JSON.stringify(testCase.input)}
                 </code>
               </p>
               <p className="mb-1">
                 <strong className="text-text-light dark:text-text-dark">Expected Output:</strong>{' '}
-                <code className="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded">
+                <code className="bg-gray-200 dark:bg-gray-600 dark:text-white px-1 py-0.5 rounded">
                   {JSON.stringify(testCase.expectedOutput)}
                 </code>
               </p>
               {testCase.explanation && (
-                <p className="text-sm text-text-light dark:text-text-dark">
+                <p className="text-sm text-text-light dark:text-white">
                   <strong>Explanation:</strong> {testCase.explanation}
                 </p>
               )}

@@ -5,6 +5,7 @@ import ProblemDisplay from './components/ProblemDisplay';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ThemeToggle from './components/ThemeToggle';
+import './App.css'
 
 const queryClient = new QueryClient();
 
