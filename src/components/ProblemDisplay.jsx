@@ -1,5 +1,6 @@
 import React from 'react';
 import AceEditor from 'react-ace';
+import { Play } from 'lucide-react';
 
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-python';
@@ -18,17 +19,10 @@ function ProblemDisplay({ problem }) {
   }, [problem]);
 
   if (!problem) {
-    return <div className="mt-8 text-center text-gray-500">No problem generated yet.</div>;
+    return <div className="mt-8 text-center text-text-light dark:text-text-dark">No problem generated yet.</div>;
   }
 
-  const {
-    problem_title,
-    difficulty,
-    language,
-    problem_description,
-    requirements,
-    test_cases,
-  } = problem;
+  const { problem_title, difficulty, language, problem_description, requirements, test_cases } = problem;
 
   const handleRunCode = async () => {
     console.log('Running code:', userCode);
@@ -71,26 +65,26 @@ function ProblemDisplay({ problem }) {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="mb-4 text-2xl font-bold text-gray-800">
+    <div className="p-6 transition-colors duration-300 rounded-lg shadow-md bg-card-light dark:bg-card-dark">
+      <h2 className="mb-4 text-2xl font-bold text-text-light dark:text-text-dark">
         {problem_title || 'Untitled Problem'}
       </h2>
       <div className="flex flex-wrap gap-4 mb-4">
-        <p className="px-3 py-1 text-sm font-semibold text-blue-800 bg-blue-100 rounded-full">
+        <p className="px-3 py-1 text-sm font-semibold rounded-full text-primary-dark dark:text-primary-light bg-primary-light dark:bg-primary-dark">
           Difficulty: {difficulty || 'Not specified'}
         </p>
-        <p className="px-3 py-1 text-sm font-semibold text-green-800 bg-green-100 rounded-full">
+        <p className="px-3 py-1 text-sm font-semibold text-green-800 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-300">
           Language: {language || 'Not specified'}
         </p>
       </div>
-      <p className="mb-6 text-gray-600">
+      <p className="mb-6 text-text-light dark:text-text-dark">
         {problem_description || 'No description available.'}
       </p>
 
       {requirements && requirements.length > 0 && (
         <div className="mb-6">
-          <h3 className="mb-2 text-xl font-semibold text-gray-800">Requirements:</h3>
-          <ul className="text-gray-600 list-disc list-inside">
+          <h3 className="mb-2 text-xl font-semibold text-text-light dark:text-text-dark">Requirements:</h3>
+          <ul className="list-disc list-inside text-text-light dark:text-text-dark">
             {requirements.map((req, index) => (
               <li key={index}>{req}</li>
             ))}
@@ -99,7 +93,7 @@ function ProblemDisplay({ problem }) {
       )}
 
       <div className="mb-6">
-        <h3 className="mb-2 text-xl font-semibold text-gray-800">Code Editor:</h3>
+        <h3 className="mb-2 text-xl font-semibold text-text-light dark:text-text-dark">Code Editor:</h3>
         <AceEditor
           mode={language === 'Python' ? 'python' : 'javascript'}
           theme="vibrant_ink"
@@ -114,47 +108,45 @@ function ProblemDisplay({ problem }) {
             showLineNumbers: true,
             tabSize: 2,
           }}
-          style={{ width: '100%', height: '300px', borderRadius: '0.375rem' }}
+          className="overflow-hidden rounded-md"
+          style={{ width: '100%', height: '300px', borderRadius: '0.375rem', border: '1px solid #4b5563' }} // Tailwind Gray-700
         />
         <button
           onClick={handleRunCode}
-          className="px-4 py-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600"
+          className="flex items-center justify-center px-4 py-2 mt-4 text-white transition-colors duration-300 rounded bg-primary-light dark:bg-primary-dark hover:bg-primary-dark dark:hover:bg-primary-light"
         >
+          <Play className="w-5 h-5 mr-2" />
           Run Code
         </button>
       </div>
+
       {feedback && (
-        <div className="mt-4 text-lg font-semibold text-gray-800">
-          <h3 className='text-2xl font-bold'>Feedback:</h3> <p>{feedback}</p>
+        <div className="mt-4 text-lg font-semibold text-text-light dark:text-text-dark">
+          <h3 className="text-2xl font-bold">Feedback:</h3>
+          <p>{feedback}</p>
         </div>
       )}
 
       {results.length > 0 && (
         <div className="mt-4">
-          <h3 className="mb-2 text-2xl font-semibold text-gray-800">Test Results:</h3>
+          <h3 className="mb-2 text-2xl font-semibold text-text-light dark:text-text-dark">Test Results:</h3>
           {results.map((result, index) => (
             <div
               key={index}
               className={`p-4 mb-4 rounded-md ${
-                result.passed ? 'bg-green-100' : 'bg-red-100'
-              }`}
+                result.passed ? 'bg-green-100 dark:bg-green-700' : 'bg-red-100 dark:bg-red-700'
+              } transition-colors duration-300`}
             >
               <p className="mb-1">
-                <strong className="text-gray-700">Test Case:</strong> {result.testCase}
+                <strong className="text-text-light dark:text-text-dark">Test Case:</strong> {result.testCase}
               </p>
               <p className="mb-1">
-                <strong className="text-gray-700">Expected Output:</strong>{' '}
-                {result.expectedOutput}
+                <strong className="text-text-light dark:text-text-dark">Expected Output:</strong> {result.expectedOutput}
               </p>
               <p className="mb-1">
-                <strong className="text-gray-700">Actual Output:</strong>{' '}
-                {result.actualOutput}
+                <strong className="text-text-light dark:text-text-dark">Actual Output:</strong> {result.actualOutput}
               </p>
-              <p
-                className={`font-semibold ${
-                  result.passed ? 'text-green-600' : 'text-red-600'
-                }`}
-              >
+              <p className={`font-semibold ${result.passed ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                 {result.passed ? 'Passed' : 'Failed'}
               </p>
             </div>
@@ -164,23 +156,23 @@ function ProblemDisplay({ problem }) {
 
       {test_cases && test_cases.length > 0 && results.length < 1 && (
         <div className="mb-6">
-          <h3 className="mb-2 text-xl font-semibold text-gray-800">Test Cases:</h3>
+          <h3 className="mb-2 text-xl font-semibold text-text-light dark:text-text-dark">Test Cases:</h3>
           {test_cases.map((testCase, index) => (
-            <div key={index} className="p-4 mb-4 rounded-md bg-gray-50">
+            <div key={index} className="p-4 mb-4 transition-colors duration-300 rounded-md bg-gray-50 dark:bg-gray-700">
               <p className="mb-1">
-                <strong className="text-gray-700">Input:</strong>{' '}
-                <code className="bg-gray-200 px-1 py-0.5 rounded">
+                <strong className="text-text-light dark:text-text-dark">Input:</strong>{' '}
+                <code className="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded">
                   {JSON.stringify(testCase.input)}
                 </code>
               </p>
               <p className="mb-1">
-                <strong className="text-gray-700">Expected Output:</strong>{' '}
-                <code className="bg-gray-200 px-1 py-0.5 rounded">
+                <strong className="text-text-light dark:text-text-dark">Expected Output:</strong>{' '}
+                <code className="bg-gray-200 dark:bg-gray-600 px-1 py-0.5 rounded">
                   {JSON.stringify(testCase.expectedOutput)}
                 </code>
               </p>
               {testCase.explanation && (
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-text-light dark:text-text-dark">
                   <strong>Explanation:</strong> {testCase.explanation}
                 </p>
               )}

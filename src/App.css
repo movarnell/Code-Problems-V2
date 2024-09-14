@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom Styles */
+body {
+    @apply transition-colors duration-300 bg-background-light text-text-light;
+  }
+
+  .dark body {
+    @apply bg-background-dark text-text-dark;
+  }
+
+  button,
+  select,
+  input,
+  textarea {
+    @apply transition-colors duration-300;
+  }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMutation } from 'react-query';
 import toast from 'react-hot-toast';
+import { RefreshCcw } from 'lucide-react';
 
 function GenerateProblemForm({ setProblem }) {
   const [formData, setFormData] = React.useState({
@@ -48,17 +49,21 @@ function GenerateProblemForm({ setProblem }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 mb-8 bg-white rounded-lg shadow-md">
+    <form
+      onSubmit={handleSubmit}
+      className="p-6 mb-8 transition-colors duration-300 rounded-lg shadow-md bg-card-light dark:bg-card-dark"
+    >
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {/* Language Select */}
         <div>
-          <label htmlFor="language" className="block mb-1 text-sm font-medium text-gray-700">
+          <label htmlFor="language" className="block mb-1 text-sm font-medium text-text-light dark:text-text-dark">
             Language:
           </label>
           <select
             id="language"
             value={formData.language}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 transition-colors duration-300 border border-gray-300 rounded-md text-text-light dark:text-text-dark dark:border-gray-600 bg-background-light dark:bg-background-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
           >
             <option value="JavaScript">JavaScript</option>
             <option value="Python">Python</option>
@@ -66,15 +71,16 @@ function GenerateProblemForm({ setProblem }) {
           </select>
         </div>
 
+        {/* Difficulty Select */}
         <div>
-          <label htmlFor="difficulty" className="block mb-1 text-sm font-medium text-gray-700">
+          <label htmlFor="difficulty" className="block mb-1 text-sm font-medium text-text-light dark:text-text-dark">
             Difficulty:
           </label>
           <select
             id="difficulty"
             value={formData.difficulty}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 transition-colors duration-300 border border-gray-300 rounded-md text-text-light dark:text-text-dark dark:border-gray-600 bg-background-light dark:bg-background-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
           >
             <option value="Very Easy">Very Easy</option>
             <option value="Easy">Easy</option>
@@ -83,19 +89,20 @@ function GenerateProblemForm({ setProblem }) {
           </select>
         </div>
 
+        {/* Problem Type Select */}
         <div>
-          <label htmlFor="problemType" className="block mb-1 text-sm font-medium text-gray-700">
+          <label htmlFor="problemType" className="block mb-1 text-sm font-medium text-text-light dark:text-text-dark">
             Problem Type:
           </label>
           <select
             id="problemType"
             value={formData.problemType}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 transition-colors duration-300 border border-gray-300 rounded-md text-text-light dark:text-text-dark dark:border-gray-600 bg-background-light dark:bg-background-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
           >
             <option value="Fundamentals">Fundamentals</option>
             <option value="Loops">Loops</option>
-            <option value="conditionals">Conditionals</option>
+            <option value="Conditionals">Conditionals</option>
             <option value="Functions">Functions</option>
             <option value="String Manipulation">String Manipulation</option>
             <option value="Arrays">Arrays</option>
@@ -110,9 +117,19 @@ function GenerateProblemForm({ setProblem }) {
       <button
         type="submit"
         disabled={generateProblemMutation.isLoading}
-        className="w-full px-4 py-2 mt-6 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:bg-blue-300"
+        className="flex items-center justify-center w-full px-4 py-2 mt-6 text-white transition-colors rounded-md bg-primary-light dark:bg-primary-dark hover:bg-primary-dark dark:hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-opacity-50 disabled:bg-primary-light dark:disabled:bg-primary-dark"
       >
-        {generateProblemMutation.isLoading ? 'Generating...' : 'Generate Problem'}
+        {generateProblemMutation.isLoading ? (
+          <>
+            <RefreshCcw className="w-5 h-5 mr-2 animate-spin" />
+            Generating...
+          </>
+        ) : (
+          <>
+            <RefreshCcw className="w-5 h-5 mr-2" />
+            Generate Problem
+          </>
+        )}
       </button>
     </form>
   );
