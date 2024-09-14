@@ -1,12 +1,6 @@
 import React from 'react';
 import { useMutation } from 'react-query';
-import { OpenAI } from 'openai';
 import toast from 'react-hot-toast'; // Import toast for notifications
-
-const openai = new OpenAI({
-    apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true
-});
 
 function GenerateProblemForm({ setProblem }) {
   const [formData, setFormData] = React.useState({
@@ -16,25 +10,19 @@ function GenerateProblemForm({ setProblem }) {
   });
 
   const generateProblemMutation = useMutation(async () => {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4-0613",
-      messages: [
-        {
-          role: "system",
-          content: "Act as a educator. Create a coding problem using the users desired language, difficulty level, and type of problem. Create some text cases with input, output, explanation. Test cases can vary in the number returned. Return JSON with the following properties: problem_title, difficulty, language, problem_description, requirements, test_cases = [{input: string, expectedOutput: string, explanation: string}]"
-        },
-        {
-          role: "user",
-          content: `Generate a ${formData.problemType} problem in ${formData.language} at a ${formData.difficulty} difficulty. Provide an appropriate number of test cases if applicable for the type of problem.`
-        }
-      ],
-      temperature: 1,
-      max_tokens: 2714,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
+    const response = await fetch('https://backend.michaelvarnell.com:8000/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
     });
-    return JSON.parse(response.choices[0].message.content);
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    return response.json();
   }, {
     onSuccess: (data) => {
       console.log(data);
@@ -70,6 +58,7 @@ function GenerateProblemForm({ setProblem }) {
             className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="JavaScript">JavaScript</option>
+            {/* Add more languages as needed */}
           </select>
         </div>
 
@@ -104,6 +93,7 @@ function GenerateProblemForm({ setProblem }) {
             <option value="String Manipulation">String Manipulation</option>
             <option value="Array">Array</option>
             <option value="Object-Oriented">Object-Oriented</option>
+            {/* Add more problem types as needed */}
           </select>
         </div>
       </div>

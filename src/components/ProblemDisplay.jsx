@@ -6,12 +6,55 @@ import 'ace-builds/src-noconflict/theme-monokai';
 
 function ProblemDisplay({ problem }) {
   const [userCode, setUserCode] = React.useState('');
+  const [feedback, setFeedback] = React.useState('');
+const [results, setResults] = React.useState([]);
 
   if (!problem) {
     return <div className="mt-8 text-center text-gray-500">No problem generated yet.</div>;
   }
 
   const { problem_title, difficulty, language, problem_description, requirements, test_cases } = problem;
+
+  const handleRunCode = async () => {
+    console.log('Running code:', userCode);
+    console.log('Problem:', problem);
+
+    const response = await fetch('https://backend.michaelvarnell.com:8000/test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userCode, problem })
+    });
+
+    const text = await response.text();
+    console.log('Response Status:', response.status);
+    console.log('Raw response:', text);
+
+
+    if (!response.ok) {
+      console.error('Network response was not ok:', response.status, text);
+      return;
+    }
+
+    try {
+      const data = JSON.parse(text);
+      console.log('Code execution result:', data);
+      setFeedback(data.feedback);
+      setResults(data.results);
+      // Display feedback and results
+      alert(data.feedback); // Show feedback to the user
+      data.results.forEach(result => {
+        console.log(`Test Case: ${result.testCase}`);
+        console.log(`Expected Output: ${result.expectedOutput}`);
+        console.log(`Actual Output: ${result.actualOutput}`);
+        console.log(`Passed: ${result.passed}`);
+      });
+    } catch (error) {
+      console.error('Error parsing JSON:', error.message);
+      console.error('Response text:', text);
+    }
+  };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
@@ -51,8 +94,27 @@ function ProblemDisplay({ problem }) {
           }}
           style={{ width: '100%', height: '300px', borderRadius: '0.375rem' }}
         />
+        <button onClick={handleRunCode}>Run Code</button>
       </div>
+      {feedback && <div className="mt-4 text-lg font-semibold text-gray-800">{feedback}</div>}
 
+    {results.length > 0 && (
+      <div className="mt-4">
+        <h3 className="mb-2 text-xl font-semibold text-gray-800">Test Results:</h3>
+        {results.map((result, index) => (
+          <div key={index} className={`p-4 mb-4 rounded-md ${result.passed ? 'bg-green-100' : 'bg-red-100'}`}>
+            <p className="mb-1"><strong className="text-gray-700">Test Case:</strong> {result.testCase}</p>
+            <p className="mb-1"><strong className="text-gray-700">Expected Output:</strong> {result.expectedOutput}</p>
+            <p className="mb-1"><strong className="text-gray-700">Actual Output:</strong> {result.actualOutput}</p>
+            <p className={`font-semibold ${result.passed ? 'text-green-600' : 'text-red-600'}`}>
+              {result.passed ? 'Passed' : 'Failed'}
+            </p>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+);
       {test_cases && test_cases.length > 0 && (
         <div>
           <h3 className="mb-2 text-xl font-semibold text-gray-800">Test Cases:</h3>
@@ -67,8 +129,6 @@ function ProblemDisplay({ problem }) {
           ))}
         </div>
       )}
-    </div>
-  );
 }
 
 export default ProblemDisplay;
