@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/mode-javascript';
@@ -8,6 +8,12 @@ function ProblemDisplay({ problem }) {
   const [userCode, setUserCode] = React.useState('');
   const [feedback, setFeedback] = React.useState('');
 const [results, setResults] = React.useState([]);
+
+useEffect(() => {
+  // Reset feedback and results when a new problem is generated
+  setFeedback('');
+  setResults([]);
+}, [problem]);
 
   if (!problem) {
     return <div className="mt-8 text-center text-gray-500">No problem generated yet.</div>;
@@ -98,25 +104,24 @@ const [results, setResults] = React.useState([]);
       </div>
       {feedback && <div className="mt-4 text-lg font-semibold text-gray-800">{feedback}</div>}
 
-    {results.length > 0 && (
-      <div className="mt-4">
-        <h3 className="mb-2 text-xl font-semibold text-gray-800">Test Results:</h3>
-        {results.map((result, index) => (
-          <div key={index} className={`p-4 mb-4 rounded-md ${result.passed ? 'bg-green-100' : 'bg-red-100'}`}>
-            <p className="mb-1"><strong className="text-gray-700">Test Case:</strong> {result.testCase}</p>
-            <p className="mb-1"><strong className="text-gray-700">Expected Output:</strong> {result.expectedOutput}</p>
-            <p className="mb-1"><strong className="text-gray-700">Actual Output:</strong> {result.actualOutput}</p>
-            <p className={`font-semibold ${result.passed ? 'text-green-600' : 'text-red-600'}`}>
-              {result.passed ? 'Passed' : 'Failed'}
-            </p>
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
-);
+      {results.length > 0 && (
+        <div className="mt-4">
+          <h3 className="mb-2 text-xl font-semibold text-gray-800">Test Results:</h3>
+          {results.map((result, index) => (
+            <div key={index} className={`p-4 mb-4 rounded-md ${result.passed ? 'bg-green-100' : 'bg-red-100'}`}>
+              <p className="mb-1"><strong className="text-gray-700">Test Case:</strong> {result.testCase}</p>
+              <p className="mb-1"><strong className="text-gray-700">Expected Output:</strong> {result.expectedOutput}</p>
+              <p className="mb-1"><strong className="text-gray-700">Actual Output:</strong> {result.actualOutput}</p>
+              <p className={`font-semibold ${result.passed ? 'text-green-600' : 'text-red-600'}`}>
+                {result.passed ? 'Passed' : 'Failed'}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+
       {test_cases && test_cases.length > 0 && (
-        <div>
+        <div className="mb-6">
           <h3 className="mb-2 text-xl font-semibold text-gray-800">Test Cases:</h3>
           {test_cases.map((testCase, index) => (
             <div key={index} className="p-4 mb-4 rounded-md bg-gray-50">
@@ -129,6 +134,8 @@ const [results, setResults] = React.useState([]);
           ))}
         </div>
       )}
+    </div>
+  );
 }
 
 export default ProblemDisplay;
