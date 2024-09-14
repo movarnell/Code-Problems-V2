@@ -2,6 +2,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import GenerateProblemForm from './components/GenerateProblemForm';
 import ProblemDisplay from './components/ProblemDisplay';
+import { Toaster } from 'react-hot-toast'; // Import Toaster to display toast notifications
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function App() {
           <ProblemDisplay problem={problem} />
         </div>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </QueryClientProvider>
   );
 }
