@@ -28,9 +28,8 @@ function App() {
             <h1 className="mb-8 text-center text-8xl text-text-light dark:text-text-dark">
               Code Problems
             </h1>
-            <h2 className="mb-4 text-2xl font-bold text-center text-balance text-text-light dark:text-text-dark">
-              AI integrated code problems using the power of OpenAI's gpt-4o-mini
-            </h2>
+            <h2 className="mb-4 text-2xl text-center text-balance text-text-light dark:text-text-dark">
+            Generate unique coding challenges with AI-powered problem creation using OpenAI.            </h2>
             <GenerateProblemForm setProblem={handleSetProblem} />
             <ProblemDisplay problem={problem} />
           </div>
