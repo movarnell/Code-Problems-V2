@@ -101,9 +101,10 @@ function ProblemDisplay({ problem }) {
       )}
 
       <div className="mb-6">
-        <h3 className="mb-2 text-xl font-semibold text-text-light dark:text-text-dark">Code Editor:</h3>
+        <h3 className="mb-2 text-2xl font-semibold text-text-light dark:text-text-dark">Code Editor:</h3>
         <AceEditor
           mode={language.toLowerCase()}
+
           theme="vibrant_ink"
           onChange={setUserCode}
           value={userCode}
@@ -114,6 +115,7 @@ function ProblemDisplay({ problem }) {
             enableAutocompletion: true,
             enableLiveAutocompletion: true,
             enableSnippets: true,
+            highlightActiveLine: false,
             showLineNumbers: true,
             tabSize: 4,
           }}
@@ -159,7 +161,7 @@ function ProblemDisplay({ problem }) {
               <p className="mb-1">
                 <strong className="text-text-light dark:text-white">Actual Output:</strong> {result.actualOutput}
               </p>
-              <p className={`font-semibold ${result.passed ? 'text-green-600 dark:text-green-400 dark:text-white' : 'text-red-600 dark:text-red-400'}`}>
+              <p className={`font-semibold ${result.passed ? 'text-green-600 dark:text-white' : 'text-red-600 dark:text-red-400'}`}>
                 {result.passed ? 'Passed' : 'Failed'}
               </p>
             </div>
