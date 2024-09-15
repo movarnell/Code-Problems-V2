@@ -73,10 +73,10 @@ function ProblemDisplay({ problem }) {
         {problem_title || 'Untitled Problem'}
       </h2>
       <div className="flex flex-wrap gap-4 mb-4">
-        <p className="px-3 py-1 text-sm font-semibold rounded-full text-primary-dark dark:text-primary-light bg-primary-light dark:bg-primary-dark">
+        <p className="px-3 py-1 text-sm font-semibold text-white rounded-full dark:text-blue-100 bg-primary-light dark:bg-primary-dark">
           Difficulty: {difficulty || 'Not specified'}
         </p>
-        <p className="px-3 py-1 text-sm font-semibold text-green-800 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-300">
+        <p className="px-3 py-1 text-sm font-semibold text-green-800 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
           Language: {language || 'Not specified'}
         </p>
       </div>

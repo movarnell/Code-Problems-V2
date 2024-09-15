@@ -107,6 +107,11 @@ function GenerateProblemForm({ setProblem }) {
             <option value="String Manipulation">String Manipulation</option>
             <option value="Arrays">Arrays</option>
             <option value="Array Methods">Array Methods</option>
+            <option value="Terinary Operators">Terinary Operators</option>
+            <option value="Recursion">Recursion</option>
+            <option value="Sorting">Sorting</option>
+            <option value="Searching">Searching</option>
+            <option value="Unit Testing">Unit Testing</option>
             <option value="Data Structure">Data Structure</option>
             <option value="Object-Oriented">Object-Oriented</option>
             {/* Add more problem types as needed */}
