@@ -25,7 +25,7 @@ function App() {
             <div className="flex justify-end mb-4">
               <ThemeToggle />
             </div>
-            <h1 className="mb-8 text-5xl text-center text-text-light dark:text-text-dark">
+            <h1 className="mb-8 text-center text-8xl text-text-light dark:text-text-dark">
               Code Problems
             </h1>
             <h2 className="mb-4 text-2xl font-bold text-center text-balance text-text-light dark:text-text-dark">
