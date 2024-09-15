@@ -65,10 +65,15 @@ function GenerateProblemForm({ setProblem }) {
             onChange={handleInputChange}
             className="w-full px-3 py-2 transition-colors duration-300 border border-gray-300 rounded-md text-text-light dark:text-text-dark dark:border-gray-600 bg-background-light dark:bg-background-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
           >
-            <option value="JavaScript">JavaScript/TypeScript</option>
-
+            <option value="JavaScript">JavaScript</option>
+            <option value="TypeScript">TypeScript</option>
             <option value="Python">Python</option>
             <option value="Java">Java</option>
+            <option value="Rust">Rust</option>
+      <option value="C++">C++</option>
+            <option value="C#">C#</option>
+            <option value="Ruby">Ruby</option>
+            <option value="Go">Go</option>
             {/* Add more languages as needed */}
           </select>
         </div>
