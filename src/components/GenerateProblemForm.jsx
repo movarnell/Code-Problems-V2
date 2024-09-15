@@ -69,7 +69,7 @@ function GenerateProblemForm({ setProblem }) {
             <option value="TypeScript">TypeScript</option>
             <option value="Python">Python</option>
             <option value="Java">Java</option>
-            
+
 
             {/* Add more languages as needed */}
           </select>
@@ -111,7 +111,7 @@ function GenerateProblemForm({ setProblem }) {
             <option value="String Manipulation">String Manipulation</option>
             <option value="Arrays">Arrays</option>
             <option value="Array Methods">Array Methods</option>
-            <option value="Terinary Operators">Terinary Operators</option>
+            <option value="Terinary Operators" className={language === 'JavaScript' ? 'block' : 'hidden'}>Terinary Operators</option>
             <option value="Recursion">Recursion</option>
             <option value="Sorting">Sorting</option>
             <option value="Searching">Searching</option>
