@@ -82,6 +82,7 @@ function ProblemDisplay({ problem }) {
     }
   };
 
+  let editorLanguage = language ? language.toLowerCase() : "javascript";
   return (
     <div className="p-6 transition-colors duration-300 rounded-lg shadow-md bg-card-light dark:bg-card-dark">
       {/* Problem Title */}
@@ -99,7 +100,7 @@ function ProblemDisplay({ problem }) {
         </p>
       </div>
       <p className="mb-6 text-text-light dark:text-text-dark">
-        {problem_description || 'No description available.'}
+        {problem_description ? problem_description : 'No description available.'}
       </p>
 
       {/* Problem Requirements */}
@@ -118,17 +119,15 @@ function ProblemDisplay({ problem }) {
       <div className="mb-6">
         <h3 className="mb-2 text-2xl font-semibold text-text-light dark:text-text-dark">Code Editor:</h3>
         <AceEditor
-          mode={language.toLowerCase()}
+          mode={editorLanguage}
           theme="vibrant_ink"
           onChange={setUserCode}
           value={userCode}
           name="code-editor"
           editorProps={{ $blockScrolling: true }}
           fontSize={"1.15em"}
-          setOptions={{
-            enableAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true,
+                   setOptions={{
+
             highlightActiveLine: false,
             showLineNumbers: true,
             tabSize: 4,
