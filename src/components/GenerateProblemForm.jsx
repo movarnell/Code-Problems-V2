@@ -69,11 +69,8 @@ function GenerateProblemForm({ setProblem }) {
             <option value="TypeScript">TypeScript</option>
             <option value="Python">Python</option>
             <option value="Java">Java</option>
-            <option value="Rust">Rust</option>
-      <option value="C++">C++</option>
-            <option value="C#">C#</option>
-            <option value="Ruby">Ruby</option>
-            <option value="Go">Go</option>
+            
+
             {/* Add more languages as needed */}
           </select>
         </div>
