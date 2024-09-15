@@ -25,10 +25,10 @@ function App() {
             <div className="flex justify-end mb-4">
               <ThemeToggle />
             </div>
-            <h1 className="mb-8 text-6xl text-center text-text-light dark:text-text-dark">
+            <h1 className="mb-8 text-5xl text-center text-text-light dark:text-text-dark">
               Code Problems
             </h1>
-            <h2 className="mb-4 text-2xl font-bold text-text-light dark:text-text-dark">
+            <h2 className="mb-4 text-2xl font-bold text-center text-balance text-text-light dark:text-text-dark">
               AI integrated code problems using the power of OpenAI's gpt-4o-mini
             </h2>
             <GenerateProblemForm setProblem={handleSetProblem} />
