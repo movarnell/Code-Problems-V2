@@ -4,12 +4,14 @@ import toast from 'react-hot-toast';
 import { RefreshCcw } from 'lucide-react';
 
 function GenerateProblemForm({ setProblem }) {
+  // State to manage form data
   const [formData, setFormData] = React.useState({
     language: 'JavaScript',
     difficulty: 'Easy',
     problemType: 'Fundamentals',
   });
 
+  // Mutation to handle problem generation
   const generateProblemMutation = useMutation(
     async () => {
       const response = await fetch('https://backend.michaelvarnell.com:8000/generate', {
@@ -21,6 +23,7 @@ function GenerateProblemForm({ setProblem }) {
       });
 
       if (!response.ok) {
+        toast.error('Error generating problem. Please try again.');
         throw new Error('Network response was not ok');
       }
 
@@ -39,10 +42,12 @@ function GenerateProblemForm({ setProblem }) {
     }
   );
 
+  // Handle input changes
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     generateProblemMutation.mutate();
@@ -69,8 +74,6 @@ function GenerateProblemForm({ setProblem }) {
             <option value="TypeScript">TypeScript</option>
             <option value="Python">Python</option>
             <option value="Java">Java</option>
-
-
             {/* Add more languages as needed */}
           </select>
         </div>
@@ -123,6 +126,7 @@ function GenerateProblemForm({ setProblem }) {
         </div>
       </div>
 
+      {/* Submit Button */}
       <button
         type="submit"
         disabled={generateProblemMutation.isLoading}

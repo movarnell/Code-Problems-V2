@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
+import toast from 'react-hot-toast';
 import { Play } from 'lucide-react';
 
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-java';
 import 'ace-builds/src-noconflict/mode-typescript';
-
-
-
 import 'ace-builds/src-noconflict/theme-vibrant_ink';
 
 function ProblemDisplay({ problem }) {
+  // State to manage user code, feedback, results, and loading status
   const [userCode, setUserCode] = useState('');
   const [feedback, setFeedback] = useState('');
   const [results, setResults] = useState([]);
@@ -24,41 +23,51 @@ function ProblemDisplay({ problem }) {
     setResults([]);
   }, [problem]);
 
+  // If no problem is provided, display a message
   if (!problem) {
     return <div className="mt-8 text-center text-text-light dark:text-text-dark">No problem generated yet.</div>;
   }
 
+  // Destructure problem properties
   const { problem_title, difficulty, language, problem_description, requirements, test_cases } = problem;
 
+  // Function to handle running the user's code
   const handleRunCode = async () => {
     setLoading(true);
+    toast.loading('Running code...');
     console.log('Running code:', userCode);
     console.log('Problem:', problem);
 
-    const response = await fetch('https://backend.michaelvarnell.com:8000/test', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userCode, problem }),
-    });
-
-    const text = await response.text();
-    console.log('Response Status:', response.status);
-    console.log('Raw response:', text);
-
-    if (!response.ok) {
-      console.error('Network response was not ok:', response.status, text);
-      return;
-    }
-
     try {
+      // Send the user's code and problem to the backend for testing
+      const response = await fetch('https://backend.michaelvarnell.com:8000/test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userCode, problem }),
+      });
+
+      const text = await response.text();
+      console.log('Response Status:', response.status);
+      console.log('Raw response:', text);
+      toast.dismiss();
+
+      if (!response.ok) {
+        toast.error('Error running code. Please try again.');
+        console.error('Network response was not ok:', response.status, text);
+        setLoading(false);
+        return;
+      }
+
       const data = JSON.parse(text);
       console.log('Code execution result:', data);
       setFeedback(data.feedback);
       setResults(data.results);
+      toast.success('Code executed successfully! Scroll down to see test results.');
       setLoading(false);
 
+      // Log each test result
       data.results.forEach((result) => {
         console.log(`Test Case: ${result.testCase}`);
         console.log(`Expected Output: ${result.expectedOutput}`);
@@ -66,17 +75,21 @@ function ProblemDisplay({ problem }) {
         console.log(`Passed: ${result.passed}`);
       });
     } catch (error) {
+      toast.dismiss();
+      toast.error('An error occurred while running the code.');
       setLoading(false);
-      console.error('Error parsing JSON:', error.message);
-      console.error('Response text:', text);
+      console.error('Error:', error.message);
     }
   };
 
   return (
     <div className="p-6 transition-colors duration-300 rounded-lg shadow-md bg-card-light dark:bg-card-dark">
+      {/* Problem Title */}
       <h2 className="mb-4 text-2xl font-bold text-text-light dark:text-text-dark">
         {problem_title || 'Untitled Problem'}
       </h2>
+
+      {/* Problem Details */}
       <div className="flex flex-wrap gap-4 mb-4">
         <p className="px-3 py-1 text-sm font-semibold text-white rounded-full dark:text-blue-100 bg-primary-light dark:bg-primary-dark">
           Difficulty: {difficulty || 'Not specified'}
@@ -89,22 +102,23 @@ function ProblemDisplay({ problem }) {
         {problem_description || 'No description available.'}
       </p>
 
+      {/* Problem Requirements */}
       {requirements && requirements.length > 0 && (
         <div className="mb-6">
           <h3 className="mb-2 text-xl font-semibold text-text-light dark:text-text-dark">Requirements:</h3>
           <ul className="list-disc list-inside text-text-light dark:text-text-dark">
-            {requirements.map((req, index) => (
+            {requirements && requirements.map((req, index) => (
               <li key={index}>{req}</li>
             ))}
           </ul>
         </div>
       )}
 
+      {/* Code Editor */}
       <div className="mb-6">
         <h3 className="mb-2 text-2xl font-semibold text-text-light dark:text-text-dark">Code Editor:</h3>
         <AceEditor
           mode={language.toLowerCase()}
-
           theme="vibrant_ink"
           onChange={setUserCode}
           value={userCode}
@@ -135,6 +149,7 @@ function ProblemDisplay({ problem }) {
         </button>
       </div>
 
+      {/* Feedback Section */}
       {feedback && (
         <div className="mt-4 text-lg font-semibold text-text-light dark:text-text-dark">
           <h3 className="text-2xl font-bold">Feedback:</h3>
@@ -142,6 +157,7 @@ function ProblemDisplay({ problem }) {
         </div>
       )}
 
+      {/* Test Results Section */}
       {results.length > 0 && (
         <div className="mt-4">
           <h3 className="mb-2 text-2xl font-semibold text-text-light dark:text-text-dark">Test Results:</h3>
@@ -169,6 +185,7 @@ function ProblemDisplay({ problem }) {
         </div>
       )}
 
+      {/* Test Cases Section */}
       {test_cases && test_cases.length > 0 && results.length < 1 && (
         <div className="mb-6">
           <h3 className="mb-2 text-xl font-semibold text-text-light dark:text-text-dark">Test Cases:</h3>
