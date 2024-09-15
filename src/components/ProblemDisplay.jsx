@@ -4,6 +4,9 @@ import { Play } from 'lucide-react';
 
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/mode-java';
+import 'ace-builds/src-noconflict/mode-typescript';
+
 import 'ace-builds/src-noconflict/theme-vibrant_ink';
 
 function ProblemDisplay({ problem }) {
@@ -98,7 +101,7 @@ function ProblemDisplay({ problem }) {
       <div className="mb-6">
         <h3 className="mb-2 text-xl font-semibold text-text-light dark:text-text-dark">Code Editor:</h3>
         <AceEditor
-          mode={language === 'Python' ? 'python' : 'javascript'}
+          mode={language.toLowerCase()}
           theme="vibrant_ink"
           onChange={setUserCode}
           value={userCode}
