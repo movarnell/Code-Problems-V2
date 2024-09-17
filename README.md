@@ -8,13 +8,26 @@ Welcome to the React + Vite template! This setup provides a minimal yet powerful
 - **ESLint Integration**: Maintain code quality with pre-configured ESLint rules.
 - **Flexible Plugins**: Choose between Babel and SWC for your development needs.
 
-### Available Plugins
+## What Does This App Do?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md): Utilizes [Babel](https://babeljs.io/) for Fast Refresh.
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc): Leverages [SWC](https://swc.rs/) for Fast Refresh.
+This app is a fun and interactive platform for generating and displaying coding problems. Whether you're a coding enthusiast looking to challenge yourself or a developer preparing for interviews, this app has got you covered!
 
-> **Note:** This README is a work in progress. More detailed documentation and examples will be added soon. Stay tuned!
+### Main Features
 
-For now, feel free to explore the code and start building your next React project with Vite!
+- **Generate Coding Problems**: Use the `GenerateProblemForm` component to create new coding problems.
+- **Display Problems**: The `ProblemDisplay` component shows the problem description and requirements.
+- **Theme Toggle**: Switch between light and dark themes with the `ThemeToggle` component.
 
-Happy coding!
+## Technologies Used
+
+- **React**: A JavaScript library for building user interfaces.
+- **Vite**: A fast build tool and development server.
+- **Jest**: A delightful JavaScript testing framework.
+- **React Testing Library**: Simple and complete React DOM testing utilities.
+- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
+- **ESLint**: A tool for identifying and fixing problems in JavaScript code.
+- **PostCSS**: A tool for transforming CSS with JavaScript plugins.
+
+## Project Structure
+
+Here's a quick overview of the project structure:
